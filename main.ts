@@ -1,5 +1,4 @@
 function Verloren (bool: boolean) {
-    SpelVoorbereiding(true)
     music.play(music.tonePlayable(262, music.beat(BeatFraction.Quarter)), music.PlaybackMode.UntilDone)
     music.play(music.tonePlayable(247, music.beat(BeatFraction.Quarter)), music.PlaybackMode.UntilDone)
     music.play(music.tonePlayable(220, music.beat(BeatFraction.Quarter)), music.PlaybackMode.UntilDone)
@@ -27,7 +26,6 @@ function StartSpel (bool2: boolean) {
     pauze = 0
 }
 function Gewonnen (bool: boolean) {
-    SpelVoorbereiding(true)
     pauze = 1
     music.play(music.stringPlayable("E F F G C5 B C5 C5 ", 451), music.PlaybackMode.LoopingInBackground)
     for (let index = 0; index < 3; index++) {
@@ -51,7 +49,6 @@ input.onGesture(Gesture.Shake, function () {
 })
 input.onLogoEvent(TouchButtonEvent.Pressed, function () {
     SpelVoorbereiding(true)
-    pauze = 0
     StartSpel(true)
 })
 input.onGesture(Gesture.TiltRight, function () {
@@ -87,17 +84,13 @@ function actie (som: string, num: number) {
 }
 function SpelVoorbereiding (bool3: boolean) {
     pauze = 1
-    led.plotBarGraph(
-    2,
-    9
-    )
     tekstlijst = ["+", "="]
     music.setVolume(35)
     tijd = randint(25, 99)
     punten = randint(25, 99)
     scoren = 0
     teller = 3
-    start_zin = "" + tijd + " sec. voor " + punten + " punten"
+    start_zin = "" + tijd + " sec voor " + punten + " punten"
 }
 let punten = 0
 let tijd = 0
@@ -118,6 +111,7 @@ basic.forever(function () {
     if (pauze == 0) {
         if (scoren == punten) {
             Gewonnen(true)
+            SpelVoorbereiding(true)
             StartSpel(true)
         }
     }
@@ -126,6 +120,7 @@ basic.forever(function () {
     if (pauze == 0) {
         if (seconde == tijd) {
             Verloren(true)
+            SpelVoorbereiding(true)
             StartSpel(true)
         }
     }
